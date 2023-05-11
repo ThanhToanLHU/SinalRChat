@@ -131,10 +131,10 @@ public bool IsExist(string Query)
                         // Loop through the rows of data
                         while (reader.Read())
                         {
-                            string userName = GetUserColDataById(reader.GetString(2), "Username");
-                            string userImage = GetUserColDataById(reader.GetString(2), "Avatar");
-                            string message = reader.GetString(3);
-                            string sendTime = reader.GetDateTime(4).ToString();
+                            string userName = GetUserColDataById(reader.GetString(1), "Username");
+                            string userImage = GetUserImage(userName);
+                            string message = reader.GetString(2);
+                            string sendTime = reader.GetDateTime(3).ToString();
 
                             CurrentMessage.Add(new Messages(userName, message, sendTime, userImage));
 
@@ -146,6 +146,22 @@ public bool IsExist(string Query)
             }
 
             return CurrentMessage;
+        }
+
+        public string GetUserImage(string username)
+        {
+            string RetimgName = "images/dummy.png";
+            try
+            {
+                string query = "select Avatar from UserData where UserName='" + username + "'";
+                string ImageName = GetColumnVal(query, "Avatar");
+
+                if (ImageName != "")
+                    RetimgName = "images/DP/" + ImageName;
+            }
+            catch (Exception ex)
+            { }
+            return RetimgName;
         }
 
         public string GetColumnVal(string Query, string ColumnName)

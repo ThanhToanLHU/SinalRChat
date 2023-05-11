@@ -90,12 +90,12 @@ namespace SignalRChat
 
         protected void OnBtnCloseClick(object sender, EventArgs e)
         {
-            string script = $"alert('{Singleton.txtEmail.Text}');";
-            ClientScript.RegisterStartupScript(this.GetType(), "ButtonClickAlert", script, true);
+            //string script = $"alert('{Singleton.txtEmail.Text}');";
+            //ClientScript.RegisterStartupScript(this.GetType(), "ButtonClickAlert", script, true);
 
-            UpdateDataCol(UserName, "Displayname", NickName);
-            UpdateDataCol(UserName, "Email", Email);
-            //Response.Redirect("Chat.aspx");
+            //UpdateDataCol(UserName, "Displayname", NickName);
+            //UpdateDataCol(UserName, "Email", Email);
+            Response.Redirect("Chat.aspx");
         }
 
         [WebMethod]

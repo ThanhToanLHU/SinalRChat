@@ -15,7 +15,7 @@
     <form id="form1" runat="server">
         <div class="login-box">
             <div class="login-logo">
-                <a href="Login.aspx"><b>SignalR </b>Chat App</a>
+                <a href="Login.aspx"><b>Chat2Fun</b></a>
             </div>
             <!-- /.login-logo -->
             <div class="login-box-body">

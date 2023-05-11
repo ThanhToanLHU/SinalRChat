@@ -26,7 +26,7 @@ namespace SignalRChat
                 CurrentMessage = ConnC.ReadMessage();
 
                 // send to caller
-                Clients.Caller.onConnected(id, userName, ConnectedUsers, CurrentMessage);
+                Clients.Caller.onConnected(id, userName, ConnC.GetUserColData(userName, "Displayname"), ConnectedUsers, CurrentMessage);
 
                 // send to all except caller client
                 Clients.AllExcept(id).onNewUserConnected(id, userName, UserImg, logintime);
@@ -48,7 +48,7 @@ namespace SignalRChat
         private void AddMessageinCache(string userName, string message, string time, string UserImg)
         {
             CurrentMessage.Add(new Messages (userName, message, time, UserImg));
-            DateTime today = DateTime.Today;
+            DateTime today = DateTime.Now;
             string query = $"insert into Messages (MessageID,UID,MessageText,SentDateTime) values({ConnC.GenerateID()},{ConnC.GetUserColData(userName, "UID")}, '{message}', '{today.ToString()}')";
             ConnC.ExecuteQuery(query);
 

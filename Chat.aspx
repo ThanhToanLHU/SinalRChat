@@ -75,11 +75,11 @@
 
            
             // Calls when user successfully logged in
-            chatHub.client.onConnected = function (id, userName, allUsers, messages, times) {
+            chatHub.client.onConnected = function (id, userName, displayName, allUsers, messages, times) {
 
                 $('#hdId').val(id);
-                $('#hdUserName').val(userName);
-                $('#spanUser').html(userName);
+                $('#hdUserName').val(displayName);
+                $('#spanUser').html(displayName);
                
                 // Add All Users
                 for (i = 0; i < allUsers.length; i++) {
@@ -225,7 +225,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>SignalR</b> Chat App</span>
+          <span class="logo-lg"><b>Chat2Fun</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -252,7 +252,8 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                         <a class="btn btn-default btn-flat" data-toggle="modal" href="#ChangePic">Change Picture</a>
+                         <a class="btn btn-default btn-flat" href="UserProfile.aspx">Your Profile</a>
+                         <%--<a class="btn btn-default btn-flat" data-toggle="modal" href="#ChangePic">Change Picture</a>--%>
                     </div>
                     <div class="pull-right">
                         <asp:Button ID="btnSignOut" runat="server" CssClass="btn btn-default btn-flat" Text="Sign Out" OnClick="btnSignOut_Click" />
@@ -390,7 +391,7 @@
                                     <tr>
                                         <div class="col-md-12">
 
-                                            <td class="col-md-12" colspan="4"></td>
+                                            <td class="col-md-12" colspan="3"></td>
                                         </div>
 
                                     </tr>

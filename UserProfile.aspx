@@ -81,15 +81,7 @@
 
             return false; // Prevent default form submission
         }
-        $(document).ready(function () {
-            var form = document.getElementById("form1");
-
-            function submitForm(e) {
-                e.preventDefault();
-            }
-
-            form.addEventListener('submit', submitForm);
-        });
+       
     </script>
 
 </head>
@@ -97,7 +89,7 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <div class="container">
-            <h1>User Management</h1>
+            <h1>Your Profile</h1>
 
             <div>
                 <label for="tbName">Name:<asp:TextBox ID="txtName" runat="server" Height="30px" Width="269px"></asp:TextBox></label>&nbsp;
@@ -115,11 +107,6 @@
             </div>
 
             <div>
-                <label for="ddlGender">Gender:</label>
-                <asp:DropDownList ID="ddlGender" runat="server">
-                    <asp:ListItem Text="Male" Value="Male"></asp:ListItem>
-                    <asp:ListItem Text="Female" Value="Female"></asp:ListItem>
-                </asp:DropDownList>
             </div>
 
             <div>
@@ -128,8 +115,7 @@
             <div class="button-container">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:Button ID="btnRedirect" runat="server" Text="Redirect" OnClick="btnRedirect_Click" />
-                        <asp:Button ID="btnSave" runat="server" BackColor="#CC0000" ForeColor="White" Height="43px" Text="Save" Width="81px" OnClick="OnBtnSaveClick"/>
+                        <asp:Button ID="btnSave" runat="server" BackColor="#33CC33" ForeColor="White" Height="43px" Text="Save" Width="81px" OnClick="OnBtnSaveClick"/>
                         <asp:Button ID="CloseBtn" runat="server" BackColor="#CC0000" ForeColor="White" Height="43px" Text="Close" Width="81px" OnClick="OnBtnCloseClick"/>
                     </ContentTemplate>
                 </asp:UpdatePanel>

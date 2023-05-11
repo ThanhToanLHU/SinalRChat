@@ -15,7 +15,7 @@
 
         <div class="register-box">
   <div class="register-logo">
-    <a href="Login.aspx"><b>SignalR </b>Chat App</a>
+      <a href="Login.aspx"><b>Chat2Fun</b></a>
   </div>
 
   <div class="register-box-body">
