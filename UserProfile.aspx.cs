@@ -80,14 +80,7 @@ namespace SignalRChat
             
             //Response.Redirect("Chat.aspx");
         }
-        protected void btnRedirect_Click(object sender, EventArgs e)
-        {
-            string script = $"alert('{Singleton.txtEmail.Text}');";
-            ClientScript.RegisterStartupScript(this.GetType(), "ButtonClickAlert", script, true);
-
-            Response.Redirect("Chat.aspx");
-        }
-
+    
         protected void OnBtnCloseClick(object sender, EventArgs e)
         {
             //string script = $"alert('{Singleton.txtEmail.Text}');";
@@ -99,15 +92,22 @@ namespace SignalRChat
         }
 
         [WebMethod]
-        public static void HandleButtonClick()
+        public static string HandleButtonClick(string message)
         {
-            //string[] strings = data.Split(',');
-            Singleton.NickName = Singleton.txtEmail.Text;
-            Singleton.txtEmail.Text = "a";
+            //Singleton.NickName = Singleton.txtEmail.Text;
+            //Singleton.txtEmail.Text = "a";
             //Email = strings[1];
+            Singleton.UpdateUserData(message);
+            return message;
         }
 
-      
+        public void UpdateUserData(string message)
+        {
+            string[] strings = message.Split(',');
+
+            UpdateDataCol(UserName, "Displayname", strings[0]);
+            UpdateDataCol(UserName, "Email", Email);
+        }
 
         public void GetUserImage(string Username)
         {

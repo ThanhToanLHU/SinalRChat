@@ -132,11 +132,12 @@ public bool IsExist(string Query)
                         while (reader.Read())
                         {
                             string userName = GetUserColDataById(reader.GetString(1), "Username");
+                            string displayName = GetUserColDataById(reader.GetString(1), "Displayname");
                             string userImage = GetUserImage(userName);
                             string message = reader.GetString(2);
                             string sendTime = reader.GetDateTime(3).ToString();
 
-                            CurrentMessage.Add(new Messages(userName, message, sendTime, userImage));
+                            CurrentMessage.Add(new Messages(userName, message, sendTime, userImage, displayName));
 
                         }
                     }

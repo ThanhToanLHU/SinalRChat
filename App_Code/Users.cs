@@ -9,6 +9,7 @@ namespace SignalRChat
     {
         public string ConnectionId { get; set; }
         public string UserName { get; set; }
+        public string Displayname { get; set; }
         public string UserImage { get; set; }
         public string LoginTime { get; set; }
     }

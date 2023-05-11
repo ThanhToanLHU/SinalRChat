@@ -14,6 +14,7 @@ namespace SignalRChat
     public partial class Chat : System.Web.UI.Page
     {
         public string UserName = "admin";
+        public string Displayname = "admin";
         public string UserImage = "/images/DP/dummy.png";
         ConnClass ConnC = new ConnClass();
         protected void Page_Load(object sender, EventArgs e)
@@ -21,6 +22,7 @@ namespace SignalRChat
             if (Session["UserName"] != null)
             {
                 UserName = Session["UserName"].ToString();
+                Displayname = ConnC.GetUserColData(UserName, "Displayname");
                 GetUserImage(UserName);
             }
             else

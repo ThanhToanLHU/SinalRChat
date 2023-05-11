@@ -78,25 +78,24 @@
             chatHub.client.onConnected = function (id, userName, displayName, allUsers, messages, times) {
 
                 $('#hdId').val(id);
-                $('#hdUserName').val(displayName);
+                $('#hdUserName').val(userName);
                 $('#spanUser').html(displayName);
-               
                 // Add All Users
                 for (i = 0; i < allUsers.length; i++) {
 
-                    AddUser(chatHub, allUsers[i].ConnectionId, allUsers[i].UserName, allUsers[i].UserImage, allUsers[i].LoginTime);
+                    AddUser(chatHub, allUsers[i].ConnectionId, allUsers[i].UserName, allUsers[i].Displayname, allUsers[i].UserImage, allUsers[i].LoginTime);
                 }
 
                 // Add Existing Messages
                 for (i = 0; i < messages.length; i++) {
-                    AddMessage(messages[i].UserName, messages[i].Message, messages[i].Time, messages[i].UserImage);
+                    AddMessage(messages[i].UserName, messages[i].DisplayName, messages[i].Message, messages[i].Time, messages[i].UserImage);
                  
                 }
             }
             
             // On New User Connected
-            chatHub.client.onNewUserConnected = function (id, name, UserImage, loginDate) {
-                AddUser(chatHub, id, name, UserImage, loginDate);
+            chatHub.client.onNewUserConnected = function (id, name, displayName, UserImage, loginDate) {
+                AddUser(chatHub, id, name, displayName, UserImage, loginDate);
             }
 
 
@@ -117,9 +116,9 @@
 
             }
 
-            chatHub.client.messageReceived = function (userName, message, time, userimg) {
+            chatHub.client.messageReceived = function (userName, displayName, message, time, userimg) {
 
-                AddMessage(userName, message, time, userimg);
+                AddMessage(userName, displayName, message, time, userimg);
             }
 
            
@@ -132,7 +131,7 @@
             return localdate;
         }
 
-        function AddUser(chatHub, id, name, UserImage, date) {
+        function AddUser(chatHub, id, name, displayName, UserImage, date) {
 
             var userId = $('#hdId').val();
 
@@ -145,7 +144,7 @@
                 code = $('<div class="box-comment">' +
                     '<img class="img-circle img-sm" src="' + UserImage + '" alt="User Image" />' +
                     ' <div class="comment-text">' +
-                    '<span class="username">' + name + '<span class="text-muted pull-right">' + date + '</span>  </span></div></div>');
+                    '<span class="username">' + displayName + '<span class="text-muted pull-right">' + date + '</span>  </span></div></div>');
 
 
                 Clist = $(
@@ -154,7 +153,7 @@
                     '<img class="contacts-list-img" src="' + UserImage + '" alt="User Image" />' +
 
                     ' <div class="contacts-list-info">' +
-                    ' <span class="contacts-list-name" id="' + id + '">' + name + ' <small class="contacts-list-date pull-right">' + date + '</small> </span>' +
+                    ' <span class="contacts-list-name" id="' + id + '">' + displayName + ' <small class="contacts-list-date pull-right">' + date + '</small> </span>' +
                     ' <span class="contacts-list-msg">How have you been? I was...</span></div></a > </li >');
 
             }
@@ -163,7 +162,7 @@
                 code = $('<div class="box-comment" id="Div' + id + '">' +
                     '<img class="img-circle img-sm" src="' + UserImage + '" alt="User Image" />' +
                     ' <div class="comment-text">' +
-                    '<span class="username">' + '<a id="' + id + '" class="user" >' + name + '<a>' + '<span class="text-muted pull-right">' + date + '</span>  </span></div></div>');
+                    '<span class="username">' + '<a id="' + id + '" class="user" >' + displayName + '<a>' + '<span class="text-muted pull-right">' + date + '</span>  </span></div></div>');
 
 
                 Clist = $(
@@ -172,7 +171,7 @@
                     '<img class="contacts-list-img" src="' + UserImage + '" alt="User Image" />' +
 
                     ' <div class="contacts-list-info">' +
-                    '<span class="contacts-list-name" id="' + id + '">' + name + ' <small class="contacts-list-date pull-right">' + date + '</small> </span>' +
+                    '<span class="contacts-list-name" id="' + id + '">' + displayName + ' <small class="contacts-list-date pull-right">' + date + '</small> </span>' +
                     ' <span class="contacts-list-msg">How have you been? I was...</span></div></a > </li >');
 
             }
@@ -183,7 +182,7 @@
 
         }
 
-        function AddMessage(userName, message, time, userimg) {
+        function AddMessage(userName, displayName, message, time, userimg) {
 
             var CurrUser = $('#hdUserName').val();
             var Side = 'right';
@@ -197,7 +196,7 @@
 
             var divChat = '<div class="direct-chat-msg ' + Side + '">' +
                 '<div class="direct-chat-info clearfix">' +
-                '<span class="direct-chat-name pull-' + Side + '">' + userName + '</span>' +
+                '<span class="direct-chat-name pull-' + Side + '">' + displayName + '</span>' +
                 '<span class="direct-chat-timestamp pull-' + TimeSide + '"">' + time + '</span>' +
                 '</div>' +
 
@@ -239,14 +238,14 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="<%= UserImage %>" class="user-image" alt="User Image" />
-                  <span class="hidden-xs"><%= this.UserName %></span>
+                  <span class="hidden-xs"><%= this.Displayname %></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header" >
                     <img src="<%= UserImage %>" class="img-circle" alt="User Image" />
                     <p style="color:#000000;">
-                      <%= UserName %>
+                      <%= Displayname %>
                     </p>
                   </li>
                   <!-- Menu Footer-->

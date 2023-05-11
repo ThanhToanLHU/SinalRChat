@@ -16,23 +16,41 @@ namespace SignalRChat
         public void Connect(string userName)
         {
             var id = Context.ConnectionId;
-           
+            OnDisconnected(true);
+            foreach (var user in ConnectedUsers.ToList())
+            {
+                if (user.UserName == userName)
+                {
+                    ConnectedUsers.Remove(user);
+                }
+            }
             if (ConnectedUsers.Count(x => x.ConnectionId == id) == 0)
             {
                 string UserImg = GetUserImage(userName);
                 string logintime = DateTime.Now.ToString();
-                ConnectedUsers.Add(new Users { ConnectionId = id, UserName = userName, UserImage = UserImg, LoginTime = logintime });
+                string displayName = ConnC.GetUserColData(userName, "Displayname");
+                ConnectedUsers.Add(new Users { ConnectionId = id, UserName = userName, Displayname = displayName, UserImage = UserImg, LoginTime = logintime });
 
                 CurrentMessage = ConnC.ReadMessage();
 
                 // send to caller
-                Clients.Caller.onConnected(id, userName, ConnC.GetUserColData(userName, "Displayname"), ConnectedUsers, CurrentMessage);
+                Clients.Caller.onConnected(id, userName, displayName, ConnectedUsers, CurrentMessage);
 
                 // send to all except caller client
-                Clients.AllExcept(id).onNewUserConnected(id, userName, UserImg, logintime);
+                Clients.AllExcept(id).onNewUserConnected(id, userName, displayName, UserImg, logintime);
             }
         }
 
+        public void RemoveUser(string userName)
+        {
+            foreach (var user in ConnectedUsers.ToList())
+            {
+                if (user.UserName == userName)
+                {
+                    ConnectedUsers.Remove(user);
+                }
+            }
+        }
 
         public void SendMessageToAll(string userName, string message, string time)
         {
@@ -41,13 +59,13 @@ namespace SignalRChat
             AddMessageinCache(userName, message, time, UserImg);
 
             // Broad cast message
-            Clients.All.messageReceived(userName, message, time, UserImg);
+            Clients.All.messageReceived(userName, ConnC.GetUserColData(userName, "Displayname"), message, time, UserImg);
 
         }
 
         private void AddMessageinCache(string userName, string message, string time, string UserImg)
         {
-            CurrentMessage.Add(new Messages (userName, message, time, UserImg));
+            CurrentMessage.Add(new Messages (userName, message, time, UserImg, ConnC.GetUserColData(userName, "Displayname")));
             DateTime today = DateTime.Now;
             string query = $"insert into Messages (MessageID,UID,MessageText,SentDateTime) values({ConnC.GenerateID()},{ConnC.GetUserColData(userName, "UID")}, '{message}', '{today.ToString()}')";
             ConnC.ExecuteQuery(query);

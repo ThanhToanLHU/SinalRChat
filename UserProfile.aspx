@@ -10,8 +10,35 @@
     <link href="Content/style.css" rel="stylesheet" />
     <link href="Content/font-awesome.css" rel="stylesheet" />
 
-    <script src="Scripts/jQuery-1.9.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="Scripts/jquery.signalR-2.2.2.min.js"></script>
+
+       <script>
+           function handleClick() {
+               var sendData = document.getElementById('<%= txtName.ClientID %>').value + "," + document.getElementById('<%= txtEmail.ClientID %>').value;
+
+               $.ajax({
+                   type: "POST",
+                   url: "UserProfile.aspx/HandleButtonClick",
+                   data: JSON.stringify({ message: sendData }),
+                   contentType: "application/json; charset=utf-8",
+                   dataType: "json",
+                   success: function (response) {
+                       alert("Data Updated!");
+                       return true;
+                   },
+                   error: function (xhr, status, error) {
+                       // Handle the error
+                       alert("An error occurred: " + error);
+                   }
+               });
+
+               return false; // Prevent default form submission
+           }
+
+       </script>
+
     <script src="Scripts/date.format.js"></script>
     <style>
         .container {
@@ -62,28 +89,6 @@
                 }
     </style>
 
-    <script>
-        function handleClick() {
-            $.ajax({
-                type: "POST",
-                url: "UserProfile.aspx/HandleButtonClick",
-                data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    alert('Button clicked!');
-                },
-                error: function (xhr, status, error) {
-                    // Handle the error
-                    alert("An error occurred: " + error);
-                }
-            });
-
-            return false; // Prevent default form submission
-        }
-       
-    </script>
-
 </head>
 <body>
     <form id="form1" runat="server">
@@ -92,8 +97,8 @@
             <h1>Your Profile</h1>
 
             <div>
-                <label for="tbName">Name:<asp:TextBox ID="txtName" runat="server" Height="30px" Width="269px"></asp:TextBox></label>&nbsp;
-                <label for="tbEmail">
+                <label >Name:<asp:TextBox ID="txtName" runat="server" Height="30px" Width="269px"></asp:TextBox></label>&nbsp;
+                <label>
                     Email:<asp:TextBox ID="txtEmail" runat="server" Height="29px" Width="267px"></asp:TextBox>
                 </label>
             </div>
@@ -115,7 +120,7 @@
             <div class="button-container">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:Button ID="btnSave" runat="server" BackColor="#33CC33" ForeColor="White" Height="43px" Text="Save" Width="81px" OnClick="OnBtnSaveClick"/>
+                        <asp:Button ID="btnSave" runat="server" BackColor="#33CC33" ForeColor="White" Height="43px" Text="Save" Width="81px" OnClick="OnBtnSaveClick" OnClientClick="return handleClick();"/>
                         <asp:Button ID="CloseBtn" runat="server" BackColor="#CC0000" ForeColor="White" Height="43px" Text="Close" Width="81px" OnClick="OnBtnCloseClick"/>
                     </ContentTemplate>
                 </asp:UpdatePanel>
