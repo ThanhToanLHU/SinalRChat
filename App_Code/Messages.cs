@@ -16,5 +16,12 @@ namespace SignalRChat
 
         public string UserImage { get; set; }
 
+        public Messages(string UserName, string Message, string Time, string UserImage)
+        {
+            this.UserName = UserName;
+            this.Message = Message;
+            this.Time = Time;
+            this.UserImage = UserImage;
+        }
     }
 }

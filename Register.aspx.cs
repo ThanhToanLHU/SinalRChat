@@ -16,7 +16,7 @@ namespace SignalRChat
         }
         protected void btnRegister_ServerClick(object sender, EventArgs e)
         {
-            string Query = "insert into UserData(UID, UserName,Email,Password)Values('" + GenerateID() + "','" + txtName.Value+"','"+txtEmail.Value+"','"+txtPassword.Value+"')";
+            string Query = "insert into UserData(UID, UserName, Displayname,Email,Password)Values('" + GenerateID() + "','" + txtName.Value + "','" + txtName.Value + "','"+txtEmail.Value+"','"+txtPassword.Value+"')";
             string ExistQ = "select * from UserData where Email='" + txtEmail.Value+"'";
             if (!ConnC.IsExist(ExistQ))
             {

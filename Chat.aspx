@@ -252,7 +252,7 @@
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a  class="btn btn-default btn-flat" href="UserProfile.aspx">Change Picture</a>
+                         <a class="btn btn-default btn-flat" data-toggle="modal" href="#ChangePic">Change Picture</a>
                     </div>
                     <div class="pull-right">
                         <asp:Button ID="btnSignOut" runat="server" CssClass="btn btn-default btn-flat" Text="Sign Out" OnClick="btnSignOut_Click" />

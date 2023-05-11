@@ -23,6 +23,8 @@ namespace SignalRChat
                 string logintime = DateTime.Now.ToString();
                 ConnectedUsers.Add(new Users { ConnectionId = id, UserName = userName, UserImage = UserImg, LoginTime = logintime });
 
+                CurrentMessage = ConnC.ReadMessage();
+
                 // send to caller
                 Clients.Caller.onConnected(id, userName, ConnectedUsers, CurrentMessage);
 
@@ -30,6 +32,7 @@ namespace SignalRChat
                 Clients.AllExcept(id).onNewUserConnected(id, userName, UserImg, logintime);
             }
         }
+
 
         public void SendMessageToAll(string userName, string message, string time)
         {
@@ -44,7 +47,10 @@ namespace SignalRChat
 
         private void AddMessageinCache(string userName, string message, string time, string UserImg)
         {
-            CurrentMessage.Add(new Messages { UserName = userName, Message = message, Time = time, UserImage = UserImg });
+            CurrentMessage.Add(new Messages (userName, message, time, UserImg));
+            DateTime today = DateTime.Today;
+            string query = $"insert into Messages (MessageID,UID,MessageText,SentDateTime) values({ConnC.GenerateID()},{ConnC.GetUserColData(userName, "UID")}, '{message}', '{today.ToString()}')";
+            ConnC.ExecuteQuery(query);
 
             if (CurrentMessage.Count > 100)
                 CurrentMessage.RemoveAt(0);

@@ -10,13 +10,17 @@ using System.Web.UI.WebControls;
 using SD = System.Drawing;
 using System.Collections;
 using System.Web.Services;
+using System.Xml.Linq;
 
 namespace SignalRChat
 {
     public partial class UserProfile : System.Web.UI.Page
     {
+        public static UserProfile Singleton;
+
         public string Email = "";
-        public string UserName = "admin";
+        public string NickName = "";
+        public static string UserName = "admin";
         public string UserImage = "/images/DP/dummy.png";
 
         public string newUserName = "";
@@ -40,26 +44,70 @@ namespace SignalRChat
         {
             if (Session["UserName"] != null)
             {
+                HttpContext.Current = Context;
+
+                Singleton = this;
                 UserName = Session["UserName"].ToString();
                 GetUserImage(UserName);
                 Email = GetUserColData(UserName, "Email");
+                NickName = GetUserColData(UserName, "Displayname");
+
+                txtName.Text = NickName;
+                txtEmail.Text = Email;
             }
             else
                 Response.Redirect("Login.aspx");
         }
 
-        [WebMethod]
-        public void YourMethodName(string args)
+        void LoadChatScreen()
         {
-            Console.WriteLine(args);
-            Response.Redirect("Chat.aspx");
+            HttpContext.Current.Response.Redirect("Chat.aspx");
         }
+        
         protected void btnSignOut_Click(object sender, EventArgs e)
         {
             Session.Clear();
             Session.Abandon();
             Response.Redirect("Login.aspx");
         }
+
+        public void OnBtnSaveClick(object sender, EventArgs e)
+        {
+
+            UpdateDataCol(UserName, "Displayname", txtName.Text);
+            UpdateDataCol(UserName, "Email", txtEmail.Text);
+
+            
+            //Response.Redirect("Chat.aspx");
+        }
+        protected void btnRedirect_Click(object sender, EventArgs e)
+        {
+            string script = $"alert('{Singleton.txtEmail.Text}');";
+            ClientScript.RegisterStartupScript(this.GetType(), "ButtonClickAlert", script, true);
+
+            Response.Redirect("Chat.aspx");
+        }
+
+        protected void OnBtnCloseClick(object sender, EventArgs e)
+        {
+            string script = $"alert('{Singleton.txtEmail.Text}');";
+            ClientScript.RegisterStartupScript(this.GetType(), "ButtonClickAlert", script, true);
+
+            UpdateDataCol(UserName, "Displayname", NickName);
+            UpdateDataCol(UserName, "Email", Email);
+            //Response.Redirect("Chat.aspx");
+        }
+
+        [WebMethod]
+        public static void HandleButtonClick()
+        {
+            //string[] strings = data.Split(',');
+            Singleton.NickName = Singleton.txtEmail.Text;
+            Singleton.txtEmail.Text = "a";
+            //Email = strings[1];
+        }
+
+      
 
         public void GetUserImage(string Username)
         {
@@ -104,16 +152,15 @@ namespace SignalRChat
                 {
                     FileInfo fi = new FileInfo(FileWithPat);
                     string ImageName = fi.Name;
-                    string query = "update UserData set Avatar='" + ImageName + "' where UserName='" + UserName + "'";
-                    if (ConnC.ExecuteQuery(query))
+                    if (UpdateDataCol(UserName, "Avatar", ImageName))
                         UserImage = "images/DP/" + ImageName;
                 }
             }
         }
 
-        bool UpdateDataCol(string Username, string colData, string data)
+        public bool UpdateDataCol(string Username, string colData, string data)
         {
-            string query = $"update UserData set {colData}='{data}' where UserName='{Username}'";
+            string query = "update UserData set "+ colData + " ='" + data + "' where UserName='" + Username + "'";
             return ConnC.ExecuteQuery(query);
         }
 
